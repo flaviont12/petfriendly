@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>200854208758-d0kle5p25tb0bo6n2outsumc1j74m6la.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.200854208758-d0kle5p25tb0bo6n2outsumc1j74m6la</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBs9dr-JxCtXjp7OaX2NfbAd9effrYATd4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>200854208758</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.petfriendly.petfriendly</string>
+	<key>PROJECT_ID</key>
+	<string>pet-friendly-tcc</string>
+	<key>STORAGE_BUCKET</key>
+	<string>pet-friendly-tcc.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:200854208758:ios:3679d8d78fc221adf3ecd7</string>
+</dict>
+</plist>
