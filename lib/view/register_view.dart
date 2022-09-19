@@ -13,7 +13,6 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
-
   late final _nomeController;
   late final _sobrenomeController;
   late final _emailController;
@@ -42,123 +41,113 @@ class _RegisterViewState extends State<RegisterView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {},
-            color: Colors.black),
-        title: const Text(
-          "CRIAR CONTA",
-          style: TextStyle(
-              color: Colors.black,
-              fontFamily: 'Montserrat',
-              fontSize: 22,
-              fontWeight: FontWeight.bold),
+        appBar: AppBar(
+          leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.of(context).pushNamedAndRemoveUntil('/login/', (route) => false);
+              },
+              color: Colors.black),
+          title: const Text(
+            "CRIAR CONTA",
+            style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Montserrat',
+                fontSize: 22,
+                fontWeight: FontWeight.bold),
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.white,
+          shadowColor: Color(0xFF07A5A8),
         ),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        shadowColor: Color(0xFF07A5A8),
-      ),
-      body: FutureBuilder(
-        future: Firebase.initializeApp(
-          options: DefaultFirebaseOptions.currentPlatform,
-        ),
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.done:
-              return SingleChildScrollView(
-                child: Padding(
-                  //padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).size.height * 0.2, 20, 0),
-                  padding: EdgeInsets.fromLTRB(20, 100 * 0.2, 20, 0),
-                  child: Column(
-                    //crossAxisAlignment: CrossAxisAlignment.start,
+        body: SingleChildScrollView(
+          child: Padding(
+            //padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).size.height * 0.2, 20, 0),
+            padding: EdgeInsets.fromLTRB(20, 100 * 0.2, 20, 0),
+            child: Column(
+              //crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Crie sua conta agora e acompanhe a saúde do seu bichinho!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500),
+                ),
+                reusableTextField("Nome", false, _nomeController),
+                reusableTextField("Sobrenome", false, _sobrenomeController),
+                reusableTextField("Email", false, _emailController),
+                reusableTextField("Senha", true, _senhaController),
+                Padding(
+                  padding: const EdgeInsets.only(top: 25.0, bottom: 10.0),
+                  child: Row(
                     children: [
-                      const Text(
-                        "Crie sua conta agora e acompanhe a saúde do seu bichinho!",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      reusableTextField("Nome", false, _nomeController),
-                      reusableTextField("Sobrenome", false, _sobrenomeController),
-                      reusableTextField("Email", false, _emailController),
-                      reusableTextField("Senha", true, _senhaController),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 25.0, bottom: 10.0),
-                        child: Row(
-                          children: [
-                            Expanded(
-                                child: ElevatedButton(
-                                    onPressed: () async {
-                                      final nome = _nomeController.text;
-                                      final sobrenome =
-                                          _sobrenomeController.text;
-                                      final email = _emailController.text;
-                                      final senha = _senhaController.text;
-                                      try {
-                                        final userCredential = await FirebaseAuth
-                                            .instance
-                                            .createUserWithEmailAndPassword(
-                                            email: email, password: senha);
-                                        print(userCredential);
-                                      } on FirebaseAuthException catch (e) {
-                                        print(e.code);
-                                        if(e.code == 'weak-password') {
-                                          print("Senha fraca!");
-                                        }else if (e.code == 'email-already-in-use') {
-                                          print("E-mail já cadastrado!");
-                                        }else if(e.code == 'invalid-email') {
-                                          print("E-mail inválido!");
-                                        }
-                                      }
-                                    },
-                                    child: Text("CADASTRAR",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontFamily: 'Montserrat',
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600)),
-                                    style: ElevatedButton.styleFrom(
-                                        primary: Color(0xFF07A5A8),
-                                        fixedSize: const Size(120.0, 50.0),
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                            BorderRadius.circular(10.0))))),
-                          ],
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text("Já possui uma conta?",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: 'Montserrat',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                          TextButton(
-                            onPressed: () {},
-                            child: Text("Entrar",
-                                style: TextStyle(
-                                    color: Color(0xFF07A5A8),
-                                    fontFamily: 'Montserrat',
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                    decoration: TextDecoration.underline)),
-                          ),
-                        ],
-                      )
+                      Expanded(
+                          child: ElevatedButton(
+                              onPressed: () async {
+                                final nome = _nomeController.text;
+                                final sobrenome = _sobrenomeController.text;
+                                final email = _emailController.text;
+                                final senha = _senhaController.text;
+                                try {
+                                  final userCredential = await FirebaseAuth
+                                      .instance
+                                      .createUserWithEmailAndPassword(
+                                          email: email, password: senha);
+                                  print(userCredential);
+                                } on FirebaseAuthException catch (e) {
+                                  print(e.code);
+                                  if (e.code == 'weak-password') {
+                                    print("Senha fraca!");
+                                  } else if (e.code == 'email-already-in-use') {
+                                    print("E-mail já cadastrado!");
+                                  } else if (e.code == 'invalid-email') {
+                                    print("E-mail inválido!");
+                                  }
+                                }
+                              },
+                              child: Text("CADASTRAR",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600)),
+                              style: ElevatedButton.styleFrom(
+                                  primary: Color(0xFF07A5A8),
+                                  fixedSize: const Size(120.0, 50.0),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(10.0))))),
                     ],
                   ),
                 ),
-              );
-            default:
-              return Text("Loading...");
-          }
-        },
-      ),
-    );
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Já possui uma conta?",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Montserrat',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400)),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pushNamedAndRemoveUntil('/login/', (route) => false);
+                      },
+                      child: Text("Entrar",
+                          style: TextStyle(
+                              color: Color(0xFF07A5A8),
+                              fontFamily: 'Montserrat',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              decoration: TextDecoration.underline)),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ));
   }
 }
