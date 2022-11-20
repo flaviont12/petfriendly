@@ -1,7 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:petfriendly/view/bottom_bar_view.dart';
+import 'package:petfriendly/view/home_view.dart';
 import 'package:petfriendly/view/login_view.dart';
+import 'package:petfriendly/view/my_pets_list_view.dart';
 import 'package:petfriendly/view/register_view.dart';
 import 'package:petfriendly/view/verify_email_view.dart';
 
@@ -12,17 +15,18 @@ void main() {
   runApp(
     MaterialApp(
       title: 'PetFriendly',
-      home: const HomePage(),
+      home: const MainPage(),
       routes: {
         '/login/': (context) => const LoginView(),
         '/register/': (context) => const RegisterView(),
+        '/my_pets/': (context) => MyPets()
       },
     ),
   );
 }
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+class MainPage extends StatelessWidget {
+  const MainPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,14 +40,13 @@ class HomePage extends StatelessWidget {
             final user = FirebaseAuth.instance.currentUser;
             if (user != null) {
               if (user.emailVerified) {
-                print("Email verificado");
+                return BottomBar();
               } else {
                 return const VerifyEmailView();
               }
             } else {
               return const LoginView();
             }
-            return const Text("Done");
           default:
             return CircularProgressIndicator();
         }
