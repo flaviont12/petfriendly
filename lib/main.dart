@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:petfriendly/constants/routes.dart';
 import 'package:petfriendly/view/bottom_bar_view.dart';
 import 'package:petfriendly/view/home_view.dart';
 import 'package:petfriendly/view/login_view.dart';
@@ -17,10 +18,10 @@ void main() {
       title: 'PetFriendly',
       home: const MainPage(),
       routes: {
-        '/login/': (context) => const LoginView(),
-        '/register/': (context) => const RegisterView(),
-        '/my_pets/': (context) => MyPets(),
-        '/bottom_bar/': (context) => BottomBar()
+        loginRoute: (context) => const LoginView(),
+        registerRoute: (context) => const RegisterView(),
+        myPetsRoute: (context) => MyPets(),
+        bottomBarRoute: (context) => BottomBar()
       },
     ),
   );

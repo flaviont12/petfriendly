@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:petfriendly/constants/routes.dart';
 import 'dart:developer' as devtools show log;
 
 import '../widgets/textField_component.dart';
@@ -92,7 +93,7 @@ class _LoginViewState extends State<LoginView> {
                                 password: senha,
                               );
                               Navigator.of(context).pushNamedAndRemoveUntil(
-                                '/bottom_bar/',
+                                bottomBarRoute,
                                 (route) => false,
                               );
                             } on FirebaseAuthException catch (e) {
@@ -141,7 +142,7 @@ class _LoginViewState extends State<LoginView> {
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pushNamedAndRemoveUntil(
-                        '/register/', (route) => false);
+                        registerRoute, (route) => false);
                   },
                   child: Text("Cadastre-se agora!",
                       style: TextStyle(

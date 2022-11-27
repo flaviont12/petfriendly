@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'dart:developer' as devtools show log;
 
+import 'package:petfriendly/constants/routes.dart';
+
 class NavigationDrawerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -99,7 +101,7 @@ class NavigationDrawerWidget extends StatelessWidget {
           final shouldLogout = await showLogOutDialog(context);
           if(shouldLogout) {
             await FirebaseAuth.instance.signOut();
-            Navigator.of(context).pushNamedAndRemoveUntil('/login/', (_) => false);
+            Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (_) => false);
           }
         }
       },

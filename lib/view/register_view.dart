@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:petfriendly/constants/routes.dart';
 import 'dart:developer' as devtools show log;
 
 import '../firebase_options.dart';
@@ -46,7 +47,7 @@ class _RegisterViewState extends State<RegisterView> {
           leading: IconButton(
               icon: Icon(Icons.arrow_back),
               onPressed: () {
-                Navigator.of(context).pushNamedAndRemoveUntil('/login/', (route) => false);
+                Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (route) => false);
               },
               color: Colors.black),
           title: const Text(
@@ -134,7 +135,7 @@ class _RegisterViewState extends State<RegisterView> {
                             fontWeight: FontWeight.w400)),
                     TextButton(
                       onPressed: () {
-                        Navigator.of(context).pushNamedAndRemoveUntil('/login/', (route) => false);
+                        Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (route) => false);
                       },
                       child: Text("Entrar",
                           style: TextStyle(
