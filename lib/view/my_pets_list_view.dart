@@ -26,16 +26,16 @@ class _MyPetsState extends State<MyPets> {
           )),
       body: Column(
         children: [
-          GridView.builder(gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisSpacing: 4.0,
-            crossAxisSpacing: 4.0,
-            childAspectRatio: 1.0
-          ),
-            itemCount: animal.length, itemBuilder: (BuildContext context, int index) {
-
-            },
-          ),
+          // GridView.builder(gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          //   crossAxisCount: 2,
+          //   mainAxisSpacing: 4.0,
+          //   crossAxisSpacing: 4.0,
+          //   childAspectRatio: 1.0
+          // ),
+          //   itemCount: animal.length, itemBuilder: (BuildContext context, int index) {
+          //
+          //   },
+          // ),
         ],
       ),
       drawer: NavigationDrawerWidget(),
