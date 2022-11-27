@@ -5,6 +5,7 @@ import 'package:petfriendly/constants/routes.dart';
 import 'dart:developer' as devtools show log;
 
 import '../firebase_options.dart';
+import '../widgets/show_error_dialog.dart';
 import '../widgets/textField_component.dart';
 
 class RegisterView extends StatefulWidget {
@@ -47,7 +48,8 @@ class _RegisterViewState extends State<RegisterView> {
           leading: IconButton(
               icon: Icon(Icons.arrow_back),
               onPressed: () {
-                Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (route) => false);
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil(loginRoute, (route) => false);
               },
               color: Colors.black),
           title: const Text(
@@ -101,11 +103,14 @@ class _RegisterViewState extends State<RegisterView> {
                                 } on FirebaseAuthException catch (e) {
                                   devtools.log(e.code);
                                   if (e.code == 'weak-password') {
-                                    devtools.log("Senha fraca!");
+                                    await showErrorDialog(context,
+                                        "Senha fraca, experimente uma senha melhor!");
                                   } else if (e.code == 'email-already-in-use') {
-                                    devtools.log("E-mail já cadastrado!");
+                                    await showErrorDialog(
+                                        context, "E-mail já cadastrado");
                                   } else if (e.code == 'invalid-email') {
-                                    devtools.log("E-mail inválido!");
+                                    await showErrorDialog(
+                                        context, "E-mail inválido");
                                   }
                                 }
                               },
@@ -135,7 +140,8 @@ class _RegisterViewState extends State<RegisterView> {
                             fontWeight: FontWeight.w400)),
                     TextButton(
                       onPressed: () {
-                        Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (route) => false);
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            loginRoute, (route) => false);
                       },
                       child: Text("Entrar",
                           style: TextStyle(
