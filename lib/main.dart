@@ -19,7 +19,8 @@ void main() {
       routes: {
         '/login/': (context) => const LoginView(),
         '/register/': (context) => const RegisterView(),
-        '/my_pets/': (context) => MyPets()
+        '/my_pets/': (context) => MyPets(),
+        '/bottom_bar/': (context) => BottomBar()
       },
     ),
   );

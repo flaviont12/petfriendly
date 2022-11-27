@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'dart:developer' as devtools show log;
 
 import '../firebase_options.dart';
 import '../widgets/textField_component.dart';
@@ -95,15 +96,15 @@ class _RegisterViewState extends State<RegisterView> {
                                       .instance
                                       .createUserWithEmailAndPassword(
                                           email: email, password: senha);
-                                  print(userCredential);
+                                  devtools.log(userCredential.toString());
                                 } on FirebaseAuthException catch (e) {
-                                  print(e.code);
+                                  devtools.log(e.code);
                                   if (e.code == 'weak-password') {
-                                    print("Senha fraca!");
+                                    devtools.log("Senha fraca!");
                                   } else if (e.code == 'email-already-in-use') {
-                                    print("E-mail já cadastrado!");
+                                    devtools.log("E-mail já cadastrado!");
                                   } else if (e.code == 'invalid-email') {
-                                    print("E-mail inválido!");
+                                    devtools.log("E-mail inválido!");
                                   }
                                 }
                               },
