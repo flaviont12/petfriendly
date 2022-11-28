@@ -1,9 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'dart:developer' as devtools show log;
 
 import 'package:petfriendly/constants/routes.dart';
+import 'package:petfriendly/services/auth/auth_service.dart';
 
 class NavigationDrawerWidget extends StatelessWidget {
   @override
@@ -100,7 +100,7 @@ class NavigationDrawerWidget extends StatelessWidget {
         if (acao == 'logout') {
           final shouldLogout = await showLogOutDialog(context);
           if(shouldLogout) {
-            await FirebaseAuth.instance.signOut();
+            await AuthService.firebase().logOut();
             Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (_) => false);
           }
         }

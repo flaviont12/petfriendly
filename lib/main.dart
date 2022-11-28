@@ -1,15 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:petfriendly/constants/routes.dart';
+import 'package:petfriendly/services/auth/auth_service.dart';
 import 'package:petfriendly/view/bottom_bar_view.dart';
-import 'package:petfriendly/view/home_view.dart';
 import 'package:petfriendly/view/login_view.dart';
 import 'package:petfriendly/view/my_pets_list_view.dart';
 import 'package:petfriendly/view/register_view.dart';
 import 'package:petfriendly/view/verify_email_view.dart';
-
-import 'firebase_options.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,15 +30,13 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform,
-      ),
+      future: AuthService.firebase().initialize(),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
-            final user = FirebaseAuth.instance.currentUser;
+            final user = AuthService.firebase().currentUser;
             if (user != null) {
-              if (user.emailVerified) {
+              if (user.isEmailVerified) {
                 return BottomBar();
               } else {
                 return const VerifyEmailView();
