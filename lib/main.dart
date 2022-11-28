@@ -21,7 +21,8 @@ void main() {
         loginRoute: (context) => const LoginView(),
         registerRoute: (context) => const RegisterView(),
         myPetsRoute: (context) => MyPets(),
-        bottomBarRoute: (context) => BottomBar()
+        bottomBarRoute: (context) => const BottomBar(),
+        verifyEmailRoute: (context) => const VerifyEmailView()
       },
     ),
   );
