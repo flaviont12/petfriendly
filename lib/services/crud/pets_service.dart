@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
@@ -6,6 +8,34 @@ import 'package:petfriendly/services/crud/crud_exceptions.dart';
 
 class PetsService {
   Database? _db;
+
+  List<DatabasePet> _pets = [];
+
+  static final PetsService _shared = PetsService._sharedInstance();
+  PetsService._sharedInstance();
+  factory PetsService() => _shared;
+
+  final _petsStreamController = StreamController<List<DatabasePet>>.broadcast();
+
+  Stream<List<DatabasePet>> get allPets => _petsStreamController.stream;
+
+  Future<DatabaseUser> getOrCreateUser({required String email}) async {
+    try {
+      final user = await getUser(email: email);
+      return user;
+    } on CouldNotFindUser {
+      final createdUser = await createUser(email: email);
+      return createdUser;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> _cachePets() async {
+    final allPets = await getAllPets();
+    _pets = allPets.toList();
+    _petsStreamController.add(_pets);
+  }
 
   Future<DatabasePet> updatePet({
     required DatabasePet pet,
@@ -16,10 +46,13 @@ class PetsService {
     required String sexo,
     required int peso,
   }) async {
+    await _ensureDbIsOpen();
     final db = _getDatabaseOrThrow();
 
+    // certifica que o pet existe
     await getPet(id: pet.id);
 
+    // update DB
     final updatesCount = await db.update(petTable, {
       nomeColumn: nome,
       tipoColumn: tipo,
@@ -32,11 +65,16 @@ class PetsService {
     if (updatesCount == 0) {
       throw CouldNotUpdatePet();
     } else {
-      return await getPet(id: pet.id);
+      final updatedPet = await getPet(id: pet.id);
+      _pets.removeWhere((pet) => pet.id == updatedPet.id);
+      _pets.add(updatedPet);
+      _petsStreamController.add(_pets);
+      return updatedPet;
     }
   }
 
   Future<Iterable<DatabasePet>> getAllPets() async {
+    await _ensureDbIsOpen();
     final db = _getDatabaseOrThrow();
     final pets = await db.query(petTable);
 
@@ -44,6 +82,7 @@ class PetsService {
   }
 
   Future<DatabasePet> getPet({required int id}) async {
+    await _ensureDbIsOpen();
     final db = _getDatabaseOrThrow();
     final pets = await db.query(
       petTable,
@@ -54,16 +93,25 @@ class PetsService {
     if (pets.isEmpty) {
       throw CouldNotFindPet();
     } else {
-      return DatabasePet.fromRow(pets.first);
+      final pet = DatabasePet.fromRow(pets.first);
+      _pets.removeWhere((pet) => pet.id == id);
+      _pets.add(pet);
+      _petsStreamController.add(_pets);
+      return pet;
     }
   }
 
   Future<int> deleteAllPets() async {
+    await _ensureDbIsOpen();
     final db = _getDatabaseOrThrow();
-    return await db.delete(petTable);
+    final numberOfDeletions = await db.delete(petTable);
+    _pets = [];
+    _petsStreamController.add(_pets);
+    return numberOfDeletions;
   }
 
   Future<void> deletePet({required int id}) async {
+    await _ensureDbIsOpen();
     final db = _getDatabaseOrThrow();
     final deletedCount = await db.delete(
       petTable,
@@ -72,10 +120,14 @@ class PetsService {
     );
     if (deletedCount == 0) {
       throw CouldNotDeletePet();
+    } else {
+      _pets.removeWhere((pet) => pet.id == id);
+      _petsStreamController.add(_pets);
     }
   }
 
   Future<DatabasePet> createPet({required DatabaseUser owner}) async {
+    await _ensureDbIsOpen();
     final db = _getDatabaseOrThrow();
 
     // certifica que o dono existe no banco com o id correto
@@ -112,10 +164,14 @@ class PetsService {
       peso: peso,
     );
 
+    _pets.add(pet);
+    _petsStreamController.add(_pets);
+
     return pet;
   }
 
   Future<DatabaseUser> getUser({required String email}) async {
+    await _ensureDbIsOpen();
     final db = _getDatabaseOrThrow();
 
     final results = await db.query(
@@ -132,6 +188,7 @@ class PetsService {
   }
 
   Future<DatabaseUser> createUser({required String email}) async {
+    await _ensureDbIsOpen();
     final db = _getDatabaseOrThrow();
     final results = await db.query(
       userTable,
@@ -154,6 +211,7 @@ class PetsService {
   }
 
   Future<void> deleteUser({required String email}) async {
+    await _ensureDbIsOpen();
     final db = _getDatabaseOrThrow();
     final deletedCount = await db.delete(
       userTable,
@@ -184,6 +242,14 @@ class PetsService {
     }
   }
 
+  Future<void> _ensureDbIsOpen() async {
+    try {
+      await open();
+    } on DatabaseAlreadyOpenException {
+      // vazio
+    }
+  }
+
   Future<void> open() async {
     if (_db != null) {
       throw DatabaseAlreadyOpenException();
@@ -199,6 +265,7 @@ class PetsService {
 
       // create pet table
       await db.execute(createPetTable);
+      await _cachePets();
     } on MissingPlatformDirectoryException {
       throw UnableToGetDocumentDirectory();
     }
