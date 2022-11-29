@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:petfriendly/view/home_view.dart';
-import 'package:petfriendly/view/my_pets_list_view.dart';
+import 'package:petfriendly/view/pets/my_pets_list_view.dart';
 
 class BottomBar extends StatefulWidget {
   const BottomBar({Key? key}) : super(key: key);

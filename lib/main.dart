@@ -3,7 +3,8 @@ import 'package:petfriendly/constants/routes.dart';
 import 'package:petfriendly/services/auth/auth_service.dart';
 import 'package:petfriendly/view/bottom_bar_view.dart';
 import 'package:petfriendly/view/login_view.dart';
-import 'package:petfriendly/view/my_pets_list_view.dart';
+import 'package:petfriendly/view/pets/my_pets_list_view.dart';
+import 'package:petfriendly/view/pets/new_pet_view.dart';
 import 'package:petfriendly/view/register_view.dart';
 import 'package:petfriendly/view/verify_email_view.dart';
 
@@ -18,7 +19,8 @@ void main() {
         registerRoute: (context) => const RegisterView(),
         myPetsRoute: (context) => MyPets(),
         bottomBarRoute: (context) => const BottomBar(),
-        verifyEmailRoute: (context) => const VerifyEmailView()
+        verifyEmailRoute: (context) => const VerifyEmailView(),
+        newPetRoute: (context) => const NewPetView()
       },
     ),
   );

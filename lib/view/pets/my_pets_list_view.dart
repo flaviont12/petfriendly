@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:petfriendly/constants/routes.dart';
 import 'package:petfriendly/models/pet.dart';
 import 'package:petfriendly/services/auth/auth_service.dart';
 import 'package:petfriendly/services/crud/pets_service.dart';
@@ -30,15 +31,26 @@ class _MyPetsState extends State<MyPets> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          iconTheme: IconThemeData(color: Color(0xFF07A5A8)),
-          centerTitle: true,
-          backgroundColor: Colors.white,
-          shadowColor: Color(0xFF07A5A8),
-          title: Image.asset(
-            'assets/images/Logo - Petfriendly.png',
-            fit: BoxFit.cover,
-            height: 100,
-          )),
+        iconTheme: IconThemeData(color: Color(0xFF07A5A8)),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        shadowColor: Color(0xFF07A5A8),
+        title: Image.asset(
+          'assets/images/Logo - Petfriendly.png',
+          fit: BoxFit.cover,
+          height: 100,
+        ),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(newPetRoute);
+              },
+              icon: Icon(
+                Icons.add,
+                color: Color(0xFF07A5A8),
+              )),
+        ],
+      ),
       body: FutureBuilder(
         future: _petsService.getOrCreateUser(email: userEmail),
         builder: (context, snapshot) {
@@ -49,6 +61,7 @@ class _MyPetsState extends State<MyPets> {
                 builder: (context, snapshot) {
                   switch (snapshot.connectionState) {
                     case ConnectionState.waiting:
+                    case ConnectionState.active:
                       return const Text("Aguardando por todos os pets...");
                     default:
                       return const CircularProgressIndicator();
