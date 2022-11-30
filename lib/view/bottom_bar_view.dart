@@ -10,7 +10,6 @@ class BottomBar extends StatefulWidget {
 }
 
 class _BottomBarState extends State<BottomBar> {
-
   int index = 0;
   static final List<Widget> _screenOptions = <Widget>[
     HomePage(),
@@ -18,6 +17,7 @@ class _BottomBarState extends State<BottomBar> {
     const Text("Calendario"),
     const Text("Menu"),
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +32,7 @@ class _BottomBarState extends State<BottomBar> {
           backgroundColor: Color(0xFFE7E6E9),
           selectedIndex: index,
           onDestinationSelected: (index) => setState(() => this.index = index),
-          destinations: [
+          destinations: const [
             NavigationDestination(
                 icon: Icon(Icons.home_outlined), label: "Home"),
             NavigationDestination(icon: Icon(Icons.pets), label: "Meus Pets"),
@@ -45,4 +45,3 @@ class _BottomBarState extends State<BottomBar> {
     );
   }
 }
-

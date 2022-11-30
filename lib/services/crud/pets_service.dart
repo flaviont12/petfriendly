@@ -12,10 +12,16 @@ class PetsService {
   List<DatabasePet> _pets = [];
 
   static final PetsService _shared = PetsService._sharedInstance();
-  PetsService._sharedInstance();
+  PetsService._sharedInstance() {
+    _petsStreamController = StreamController<List<DatabasePet>>.broadcast(
+      onListen: () {
+        _petsStreamController.sink.add(_pets);
+      },
+    );
+  }
   factory PetsService() => _shared;
 
-  final _petsStreamController = StreamController<List<DatabasePet>>.broadcast();
+  late final StreamController<List<DatabasePet>> _petsStreamController;
 
   Stream<List<DatabasePet>> get allPets => _petsStreamController.stream;
 

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:petfriendly/constants/routes.dart';
 import 'package:petfriendly/models/pet.dart';
@@ -19,12 +21,6 @@ class _MyPetsState extends State<MyPets> {
   void initState() {
     _petsService = PetsService();
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _petsService.close();
-    super.dispose();
   }
 
   @override
@@ -51,23 +47,29 @@ class _MyPetsState extends State<MyPets> {
               )),
         ],
       ),
-      body: FutureBuilder(
-        future: _petsService.getOrCreateUser(email: userEmail),
+      body: StreamBuilder(
+        stream: _petsService.allPets,
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
-            case ConnectionState.done:
-              return StreamBuilder(
-                stream: _petsService.allPets,
-                builder: (context, snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.waiting:
-                    case ConnectionState.active:
-                      return const Text("Aguardando por todos os pets...");
-                    default:
-                      return const CircularProgressIndicator();
-                  }
-                },
-              );
+            case ConnectionState.waiting:
+            case ConnectionState.active:
+              if (snapshot.hasData) {
+                final allPets = snapshot.data as List<DatabasePet>;
+
+                return ListView.builder(
+                  itemCount: allPets.length,
+                  itemBuilder: (context, index) {
+                    log(allPets.length.toString());
+                    final pet = allPets[index];
+                    return ListTile(
+                      title: Container(
+                          color: Color(0xFF07A5A8), child: Text(pet.nome)),
+                    );
+                  },
+                );
+              } else {
+                return CircularProgressIndicator();
+              }
             default:
               return const CircularProgressIndicator();
           }
