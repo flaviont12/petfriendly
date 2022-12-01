@@ -53,16 +53,16 @@ class DefaultFirebaseOptions {
     apiKey: 'AIzaSyCtS-wSfJPdgoy_hWI8Raq2fT6P83-W_Bs',
     appId: '1:200854208758:android:9604a4f01555d70af3ecd7',
     messagingSenderId: '200854208758',
-    projectId: 'pet-friendly-tcc',
-    storageBucket: 'pet-friendly-tcc.appspot.com',
+    projectId: 'create_pet-friendly-tcc',
+    storageBucket: 'create_pet-friendly-tcc.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBs9dr-JxCtXjp7OaX2NfbAd9effrYATd4',
     appId: '1:200854208758:ios:3679d8d78fc221adf3ecd7',
     messagingSenderId: '200854208758',
-    projectId: 'pet-friendly-tcc',
-    storageBucket: 'pet-friendly-tcc.appspot.com',
+    projectId: 'create_pet-friendly-tcc',
+    storageBucket: 'create_pet-friendly-tcc.appspot.com',
     iosClientId: '200854208758-d0kle5p25tb0bo6n2outsumc1j74m6la.apps.googleusercontent.com',
     iosBundleId: 'com.petfriendly.petfriendly',
   );
